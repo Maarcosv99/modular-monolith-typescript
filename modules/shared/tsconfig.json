@@ -1,0 +1,15 @@
+{
+	"extends": "tooling/typescript-config/node",
+	"compilerOptions": {
+		"module": "ESNext",
+		"moduleResolution": "Bundler",
+		"baseUrl": ".",
+		"paths": {
+			"@/*": ["./src/*"],
+			"core/*": ["./src/core/*"],
+			"infrastructure/*": ["./src/infrastructure/*"],
+		}
+	},
+	"include": [".", "drizzle.config.ts", "drizzle.migrate.ts"],
+	"exclude": ["node_modules"]
+}

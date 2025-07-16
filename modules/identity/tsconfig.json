@@ -1,0 +1,20 @@
+{
+	"extends": "@workspace/typescript-config/node",
+	"compilerOptions": {
+		"module": "ESNext",
+		"moduleResolution": "Bundler",
+		"baseUrl": ".",
+		"paths": {
+			"@/*": ["./src/*"],
+			"core/*": ["./src/core/*"],
+			"application/*": ["./src/application/*"],
+			"infrastructure/*": ["./src/infrastructure/*"],
+			"shared/*": ["./src/shared/*"],
+			
+			"modules/shared/*": ["../../modules/shared/*"]
+		},
+		"types": ["vitest/globals"]
+	},
+	"include": [".", "drizzle.config.ts", "drizzle.migrate.ts"],
+	"exclude": ["node_modules"]
+}

@@ -1,0 +1,19 @@
+{
+  "name": "tooling/typescript-config",
+  "private": true,
+  "type": "module",
+  "files": [
+    "base.json",
+    "node.json",
+    "react.json",
+    "remix.json"
+  ],
+  "dependencies": {
+    "typescript": "^5.3.3",
+    "zod": "3.23.8"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "eslint": "8.38.0"
+  }
+}
