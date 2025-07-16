@@ -1,13 +1,12 @@
 import { Result, Success, Failure } from 'modules/shared/src/core/result';
 import { Database } from 'modules/shared/src/infrastructure/database/database.interface';
 
-import { UserRepository } from 'core/repositories/user.repository';
 import { User } from 'core/entities/user.entity';
 
 import { UserNotFoundException } from 'core/exceptions/user-not-found.exception';
 import { UserAlreadyExistsException } from 'core/exceptions/user-already-exists.exception';
 
-export class DrizzleUserRepository implements UserRepository {
+export class UserRepository {
   constructor(private readonly database: Database) {}
 
   async create(user: User): Promise<Result<User, UserAlreadyExistsException>> {
