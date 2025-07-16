@@ -2,12 +2,10 @@ import bcrypt from 'bcrypt';
 
 import { Result, Success, Failure } from 'modules/shared/src/core/result';
 
-import { PasswordHasherService } from 'application/services/password-hasher.service';
-
 import { HashingException } from 'application/exceptions/hashing-error.exception';
 import { PasswordNotMatchingException } from 'application/exceptions/password-not-matching.exception';
 
-export class BcryptPasswordHasherService implements PasswordHasherService {
+export class PasswordHasherService {
   async hash(password: string): Promise<Result<string, HashingException>> {
     try {
       const salt = await bcrypt.genSalt(10);
