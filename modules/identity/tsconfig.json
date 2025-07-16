@@ -1,11 +1,10 @@
 {
-	"extends": "@workspace/typescript-config/node",
+	"extends": "tooling/typescript-config/node",
 	"compilerOptions": {
 		"module": "ESNext",
 		"moduleResolution": "Bundler",
 		"baseUrl": ".",
 		"paths": {
-			"@/*": ["./src/*"],
 			"core/*": ["./src/core/*"],
 			"application/*": ["./src/application/*"],
 			"infrastructure/*": ["./src/infrastructure/*"],

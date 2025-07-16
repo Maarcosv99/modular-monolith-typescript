@@ -1,4 +1,4 @@
-import { Result } from 'modules/shared/core/result';
+import { Result } from 'modules/shared/src/core/result';
 
 import { HashingException } from 'application/exceptions/hashing-error.exception';
 
