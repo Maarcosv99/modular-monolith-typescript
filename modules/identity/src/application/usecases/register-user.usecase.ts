@@ -1,12 +1,14 @@
-import { Success, Failure, isFailure, isSuccess } from 'modules/shared/src/core/result';
+import { Result, Success, Failure, isFailure, isSuccess } from 'modules/shared/src/core/result';
 
-import { UserRepository } from 'application/repositories/user.repository';
+import { UserRepository } from 'core/repositories/user.repository';
 import { Email } from 'core/value-objects/email.value-object';
 import { User } from 'core/entities/user.entity';
 
 import { EmailAlreadyUsedException } from 'core/exceptions/email-already-used.exception';
 import { PasswordHasherService } from 'application/services/hashing/password-hasher.service';
 import { Password } from 'core/value-objects/password.value-object';
+import { InvalidEmailException } from 'core/exceptions/invalid-email.exception';
+import { HashingException } from 'application/exceptions/hashing-error.exception';
 
 interface RegisterUserInput {
   first_name: string
@@ -23,10 +25,10 @@ export class RegisterUserUseCase {
   
   async execute(
     input: RegisterUserInput
-  ) {
+  ): Promise<Result<User, EmailAlreadyUsedException | InvalidEmailException | HashingException>> {
     const emailOrError = Email.create(input.email);
     if (isFailure(emailOrError)) return Failure(emailOrError.error);
-    
+
     const existingUser = await this.userRepo.findByEmail(emailOrError.value.value);
     if (isSuccess(existingUser)) {
       return Failure(new EmailAlreadyUsedException(emailOrError.value.value));

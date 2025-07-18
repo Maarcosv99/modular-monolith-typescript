@@ -8,8 +8,9 @@
 			"core/*": ["./src/core/*"],
 			"application/*": ["./src/application/*"],
 			"infrastructure/*": ["./src/infrastructure/*"],
+			"http/*": ["./src/http/*"],
 			"shared/*": ["./src/shared/*"],
-			
+			"bootstrap": ["./src/bootstrap.ts"],
 			"modules/shared/*": ["../../modules/shared/*"]
 		},
 		"types": ["vitest/globals"]

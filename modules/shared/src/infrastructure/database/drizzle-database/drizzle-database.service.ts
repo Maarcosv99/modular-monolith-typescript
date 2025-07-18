@@ -3,7 +3,7 @@ import type { NodePgDatabase } from 'drizzle-orm/node-postgres';
 import { eq } from 'drizzle-orm';
 
 import { Pool } from 'pg';
-import type { Database } from 'infrastructure/database/database.interface';
+import type { Database } from 'application/service/database.interface';
 
 export class DrizzleDatabaseService implements Database {
   private database: NodePgDatabase;

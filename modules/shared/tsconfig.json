@@ -8,6 +8,8 @@
 			"@/*": ["./src/*"],
 			"core/*": ["./src/core/*"],
 			"infrastructure/*": ["./src/infrastructure/*"],
+			"application/*": ["./src/application/*"],
+			"http/*": ["./src/http/*"]
 		}
 	},
 	"include": [".", "drizzle.config.ts", "drizzle.migrate.ts"],

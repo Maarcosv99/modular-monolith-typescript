@@ -1,12 +1,14 @@
 import { Result, Success, Failure } from 'modules/shared/src/core/result';
-import { Database } from 'modules/shared/src/infrastructure/database/database.interface';
+import { Database } from 'modules/shared/src/application/service/database.interface';
 
 import { User } from 'core/entities/user.entity';
 
 import { UserNotFoundException } from 'core/exceptions/user-not-found.exception';
 import { UserAlreadyExistsException } from 'core/exceptions/user-already-exists.exception';
 
-export class UserRepository {
+import { UserRepository } from 'core/repositories/user.repository';
+
+export class UserRepositoryDatabase implements UserRepository{
   constructor(private readonly database: Database) {}
 
   async create(user: User): Promise<Result<User, UserAlreadyExistsException>> {
