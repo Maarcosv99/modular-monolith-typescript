@@ -1,14 +1,21 @@
+import { injectable, registry } from 'tsyringe';
+
 import type {
   RestServerService,
   RestServerConfig,
 } from 'http/rest/rest';
-import { RestRoute } from 'http/rest/rest';
+import { RestRoute, RestServerServiceSymbol } from 'http/rest/rest';
 
 import { expressRouteAdapter } from './express-route-adapter';
 import { expressMiddlewareAdapter } from './express-middleware-adapter';
 
 import express from 'express';
 
+@injectable()
+@registry([{
+  token: RestServerServiceSymbol,
+  useClass: ExpressServerService,
+}])
 export class ExpressServerService implements RestServerService {
   private app: express.Application;
 

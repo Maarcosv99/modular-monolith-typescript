@@ -19,11 +19,10 @@
 			"ESNext",
       "DOM"
     ],
-    "incremental": true,
     "isolatedModules": true,
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
-		"types": ["node"],
+		"types": ["node"]
   }
 }

@@ -1,5 +1,5 @@
 {
-  "name": "tooling/typescript-config",
+  "name": "@tooling/typescript-config",
   "private": true,
   "type": "module",
   "files": [

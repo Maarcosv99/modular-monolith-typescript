@@ -1,10 +1,18 @@
+import { injectable, registry} from 'tsyringe';
+
 import { drizzle } from 'drizzle-orm/node-postgres';
 import type { NodePgDatabase } from 'drizzle-orm/node-postgres';
 import { eq } from 'drizzle-orm';
 
 import { Pool } from 'pg';
 import type { Database } from 'application/service/database.interface';
+import { DatabaseSymbol } from 'application/service/database.interface';
 
+@injectable()
+@registry([{
+  token: DatabaseSymbol,
+  useClass: DrizzleDatabaseService,
+}])
 export class DrizzleDatabaseService implements Database {
   private database: NodePgDatabase;
 

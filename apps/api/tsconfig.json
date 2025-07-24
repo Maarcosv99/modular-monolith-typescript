@@ -1,0 +1,17 @@
+{
+	"extends": "@tooling/typescript-config/node",
+	"compilerOptions": {
+		"module": "ESNext",
+		"moduleResolution": "Bundler",
+		"esModuleInterop": true,
+		"baseUrl": ".",
+		"paths": {
+			"@/*": ["./src/*"],
+
+			"@modules/identity": ["modules/identity/src"],
+			"@modules/shared": ["modules/shared/src"]
+		}
+	},
+	"include": [".", "drizzle.config.ts", "drizzle.migrate.ts"],
+	"exclude": ["node_modules"]
+}

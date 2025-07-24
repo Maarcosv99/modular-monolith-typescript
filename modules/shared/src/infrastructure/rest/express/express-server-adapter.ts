@@ -1,8 +1,7 @@
-import type { RestController, RestControllerConfig } from 'http/rest/rest';
+import type { RestControllerConfig } from 'http/rest/rest';
 import type { Application, Router } from 'express';
 import type { Server } from 'http';
 
-import constants from 'core/constants';
 import { setupRoutes } from './express-setup-routes';
 
 export class ExpressServerAdapter {

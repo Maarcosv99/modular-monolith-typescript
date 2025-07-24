@@ -1,10 +1,19 @@
+import { injectable, registry } from 'tsyringe';
+
 import bcrypt from 'bcrypt';
 
-import { Result, Success, Failure } from 'modules/shared/src/core/result';
+import { Result, Success, Failure } from '@modules/shared/core/result';
 
 import { HashingException } from 'application/exceptions/hashing-error.exception';
 import { PasswordNotMatchingException } from 'application/exceptions/password-not-matching.exception';
 
+export const PasswordHasherServiceSymbol = Symbol.for('PasswordHasherService');
+
+@injectable()
+@registry([{
+  token: PasswordHasherServiceSymbol,
+  useClass: PasswordHasherService,
+}])
 export class PasswordHasherService {
   async hash(password: string): Promise<Result<string, HashingException>> {
     try {

@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 
-import { isFailure } from 'modules/shared/src/core/result';
+import { isFailure } from '@modules/shared/core/result';
 
 import { User } from 'core/entities/user.entity';
 import { Password } from 'core/value-objects/password.value-object';

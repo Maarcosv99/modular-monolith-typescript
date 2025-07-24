@@ -1,9 +1,13 @@
 {
-	"extends": "tooling/typescript-config/node",
+	"extends": "@tooling/typescript-config/node",
 	"compilerOptions": {
-		"module": "ESNext",
-		"moduleResolution": "Bundler",
+		"module": "preserve",
+		"moduleResolution": "bundler",
 		"baseUrl": ".",
+		"experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+		"isolatedModules": true,
+		"declaration": true,
 		"paths": {
 			"@/*": ["./src/*"],
 			"core/*": ["./src/core/*"],

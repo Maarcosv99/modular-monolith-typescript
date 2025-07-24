@@ -1,4 +1,4 @@
-import { DomainException } from 'modules/shared/src/core/exception/domain-exception';
+import { DomainException } from '@modules/shared/core/exception/domain-exception';
 
 export class PasswordMaxLengthException extends DomainException {
   constructor(length: number) {

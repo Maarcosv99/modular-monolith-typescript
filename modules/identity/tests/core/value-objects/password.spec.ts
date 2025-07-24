@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 
-import { isFailure, isSuccess } from 'modules/shared/src/core/result';
+import { isFailure, isSuccess } from '@modules/shared/core/result';
 
 import { Password } from 'core/value-objects/password.value-object';
 import { PasswordMaxLengthException } from 'core/exceptions/password-max-length.exception';

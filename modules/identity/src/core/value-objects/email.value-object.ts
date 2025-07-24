@@ -1,5 +1,5 @@
-import type { Result } from 'modules/shared/src/core/result';
-import { Success, Failure } from 'modules/shared/src/core/result';
+import type { Result } from '@modules/shared/core/result';
+import { Success, Failure } from '@modules/shared/core/result';
 
 import { InvalidEmailException } from 'core/exceptions/invalid-email.exception';
 

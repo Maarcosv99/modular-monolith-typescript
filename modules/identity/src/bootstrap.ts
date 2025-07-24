@@ -1,12 +1,19 @@
-import { ExpressServerService } from 'modules/shared/src/infrastructure/rest/express/express.service';
+import 'reflect-metadata';
+import { container } from 'tsyringe';
+import 'infrastructure/container/register';
 
-import { routes } from './config';
+import type { RestServerService } from '@modules/shared/http/rest/rest';
+import { RestServerServiceSymbol } from '@modules/shared/http/rest/rest';
 
-const rest = new ExpressServerService();
+const rest = container.resolve<RestServerService>(RestServerServiceSymbol);
+console.log(rest);
+
 rest.configure({
   port: 3000,
   basePath: '/api/v1/identity',
+  middlewares: [
+    // cors
+  ]
 });
 
-rest.addRoute(routes);
 rest.start();

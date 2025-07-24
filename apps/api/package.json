@@ -1,43 +1,37 @@
 {
 	"dependencies": {
-		"@tooling/eslint-config": "workspace:^",
-		"drizzle-orm": "^0.44.3",
-		"express": "^5.1.0",
-		"pg": "^8.16.3",
-		"tsyringe": "^4.10.0",
-		"uuid": "^9.0.1",
-		"zod": "^3.23.8"
+		"@modules/identity": "workspace:*",
+		"@modules/shared": "workspace:*",
+		"@tooling/eslint-config": "workspace:*",
+		"express": "^5.1.0"
 	},
 	"devDependencies": {
+		"@esbuild-plugins/tsconfig-paths": "^0.1.2",
 		"@tooling/typescript-config": "workspace:^",
 		"@types/express": "^5.0.3",
-		"@types/pg": "^8.15.4",
-		"@types/uuid": "^9.0.7",
 		"dotenv": "^16.3.1",
 		"dotenv-cli": "^7.4.2",
 		"esbuild-register": "^3.5.0",
 		"eslint": "8.38.0",
-		"files-folder": "^1.2.4",
+		"ts-node": "^10.9.2",
 		"tsup": "^7.2.0",
-		"tsx": "^3.12.7"
+		"tsx": "^3.12.7",
+		"typescript": "^5.8.3",
+		"vite": "^7.0.5",
+		"vite-node": "^3.2.4",
+		"vite-tsconfig-paths": "^5.1.4"
 	},
-	"main": "dist/index.js",
-	"types": "dist/index.d.ts",
-	"name": "@modules/shared",
-	"exports": {
-		"./*": {
-			"import": "./dist/*.js",
-			"require": "./dist/*.cjs",
-			"types": "./dist/*.d.ts"
-		}
-	},
+	"main": "src/main.ts",
+	"name": "@apps/api",
 	"scripts": {
-		"build": "tsup",
+		"build": "vite build",
+		"start": "vite-node src/main.ts",
 		"clean": "rm -rf .turbo node_modules",
 		"format": "prettier --write . --ignore-path ../../.gitignore",
 		"lint": "eslint ."
 	},
 	"type": "module",
+	"types": "src/main.ts",
 	"eslintConfig": {
 		"root": true,
 		"extends": [

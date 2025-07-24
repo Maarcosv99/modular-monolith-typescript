@@ -101,4 +101,6 @@ export interface RestServerService {
   start(): void
 }
 
+export const RestServerServiceSymbol = Symbol.for('RestServerService');
+
 export { RestRoute as route };

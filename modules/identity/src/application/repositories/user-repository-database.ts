@@ -1,15 +1,26 @@
-import { Result, Success, Failure } from 'modules/shared/src/core/result';
-import { Database } from 'modules/shared/src/application/service/database.interface';
+import { injectable, inject, registry } from 'tsyringe';
+
+import { Result, Success, Failure } from '@modules/shared/core/result';
+import type { Database } from '@modules/shared/application/service/database.interface';
+import { DatabaseSymbol } from '@modules/shared/application/service/database.interface';
 
 import { User } from 'core/entities/user.entity';
 
 import { UserNotFoundException } from 'core/exceptions/user-not-found.exception';
 import { UserAlreadyExistsException } from 'core/exceptions/user-already-exists.exception';
 
-import { UserRepository } from 'core/repositories/user.repository';
+import { UserRepository, UserRepositorySymbol } from 'core/repositories/user.repository';
 
+@injectable()
+@registry([{
+  token: UserRepositorySymbol,
+  useClass: UserRepositoryDatabase,
+}])
 export class UserRepositoryDatabase implements UserRepository{
-  constructor(private readonly database: Database) {}
+  constructor(
+    @inject(DatabaseSymbol)
+    private readonly database: Database
+  ) {}
 
   async create(user: User): Promise<Result<User, UserAlreadyExistsException>> {
     const existingUser = await this.database.find<User>('users', { email: user.email.value });

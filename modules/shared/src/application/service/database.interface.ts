@@ -5,3 +5,5 @@ export interface Database {
   update<T>(table: string, data: T, where?: Record<string, any>): Promise<T>;
   delete(table: string, where?: Record<string, any>): Promise<void>;
 }
+
+export const DatabaseSymbol = Symbol.for('Database');

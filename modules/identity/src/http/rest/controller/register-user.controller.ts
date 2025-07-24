@@ -1,7 +1,10 @@
-import type { RestController, HttpRequest, HttpResponse } from 'modules/shared/src/http/rest/rest';
-import { HttpStatus } from 'modules/shared/src/http/rest/rest';
+import { injectable, inject, registry } from 'tsyringe';
+import { Identifiers } from 'src/constants';
 
-import { isFailure } from 'modules/shared/src/core/result';
+import type { RestController, HttpRequest, HttpResponse } from '@modules/shared/http/rest/rest';
+import { HttpStatus } from '@modules/shared/http/rest/rest';
+
+import { isFailure } from '@modules/shared/core/result';
 
 import { RegisterUserUseCase } from 'application/usecases/register-user.usecase';
 
@@ -11,13 +14,21 @@ import { EmailAlreadyUsedException } from 'core/exceptions/email-already-used.ex
 import { InvalidEmailException } from 'core/exceptions/invalid-email.exception';
 import { HashingException } from 'application/exceptions/hashing-error.exception';
 
+@injectable()
+@registry([{
+  token: Identifiers.RegisterUserController,
+  useClass: RegisterUserController,
+}])
 export class RegisterUserController implements RestController {
   constructor(
+    @inject(Identifiers.RegisterUserUseCase)
     private readonly registerUserUseCase: RegisterUserUseCase
   ) {}
 
   async handleRequest(request: HttpRequest): Promise<HttpResponse<unknown>> {
     const { first_name, last_name, email, password } = request.body as RegisterUserRequestDto;
+
+    console.log(this.registerUserUseCase);
 
     const result = await this.registerUserUseCase.execute({ first_name, last_name, email, password });
 

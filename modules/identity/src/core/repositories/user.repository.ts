@@ -1,4 +1,4 @@
-import { Result } from 'modules/shared/src/core/result';
+import { Result } from '@modules/shared/core/result';
 
 import { User } from 'core/entities/user.entity';
 
@@ -12,3 +12,5 @@ export interface UserRepository {
   update(user: User): Promise<Result<User, UserNotFoundException>>
   delete(id: string): Promise<Result<void, UserNotFoundException>>
 }
+
+export const UserRepositorySymbol = Symbol.for('UserRepository');

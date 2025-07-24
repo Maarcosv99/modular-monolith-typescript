@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 
-import { isFailure, isSuccess } from 'modules/shared/src/core/result';
+import { isFailure, isSuccess } from '@modules/shared/core/result';
 
 import { Email } from 'core/value-objects/email.value-object';
 import { InvalidEmailException } from 'core/exceptions/invalid-email.exception';

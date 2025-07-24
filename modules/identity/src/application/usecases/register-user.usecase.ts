@@ -1,11 +1,15 @@
-import { Result, Success, Failure, isFailure, isSuccess } from 'modules/shared/src/core/result';
+import { injectable, inject, registry } from 'tsyringe';
 
-import { UserRepository } from 'core/repositories/user.repository';
+import { Result, Success, Failure, isFailure, isSuccess } from '@modules/shared/core/result';
+
+import type { UserRepository } from 'core/repositories/user.repository';
+import { UserRepositorySymbol } from 'core/repositories/user.repository';
 import { Email } from 'core/value-objects/email.value-object';
 import { User } from 'core/entities/user.entity';
 
 import { EmailAlreadyUsedException } from 'core/exceptions/email-already-used.exception';
-import { PasswordHasherService } from 'application/services/hashing/password-hasher.service';
+import type { PasswordHasherService } from 'application/services/hashing/password-hasher.service';
+import { PasswordHasherServiceSymbol } from 'application/services/hashing/password-hasher.service';
 import { Password } from 'core/value-objects/password.value-object';
 import { InvalidEmailException } from 'core/exceptions/invalid-email.exception';
 import { HashingException } from 'application/exceptions/hashing-error.exception';
@@ -17,9 +21,18 @@ interface RegisterUserInput {
   password: string
 }
 
+export const RegisterUserUseCaseSymbol = Symbol.for('RegisterUserUseCase');
+
+@injectable()
+@registry([{
+  token: RegisterUserUseCaseSymbol,
+  useClass: RegisterUserUseCase,
+}])
 export class RegisterUserUseCase {
   constructor(
+    @inject(UserRepositorySymbol)
     private userRepo: UserRepository,
+    @inject(PasswordHasherServiceSymbol)
     private hasher: PasswordHasherService,
   ) {}
   

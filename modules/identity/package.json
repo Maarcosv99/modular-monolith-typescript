@@ -1,34 +1,40 @@
 {
 	"dependencies": {
+		"@modules/shared": "workspace:^",
+		"@tooling/eslint-config": "workspace:^",
 		"bcrypt": "^6.0.0",
 		"drizzle": "^1.4.0",
 		"drizzle-orm": "^0.44.3",
-		"modules/shared": "workspace:^",
 		"pg": "^8.16.3",
-		"tooling/eslint-config": "workspace:^",
+		"reflect-metadata": "^0.2.2",
+		"tsyringe": "^4.10.0",
 		"uuid": "^9.0.1",
 		"zod": "^3.23.8"
 	},
 	"devDependencies": {
+		"@swc/core": "^1.13.2",
+		"@tooling/typescript-config": "workspace:^",
 		"@types/bcrypt": "^5.0.2",
 		"@types/uuid": "^9.0.7",
 		"dotenv": "^16.3.1",
 		"dotenv-cli": "^7.4.2",
+		"esbuild": "^0.25.8",
+		"esbuild-plugin-alias-path": "^2.0.2",
 		"esbuild-register": "^3.5.0",
 		"eslint": "8.38.0",
-		"tooling/typescript-config": "workspace:^",
 		"tsup": "^7.2.0",
 		"tsx": "^3.14.0",
 		"vite-tsconfig-paths": "^5.1.4",
 		"vitest": "^3.2.4"
 	},
-	"main": "src/index.ts",
-	"name": "modules/identity",
+	"name": "@modules/identity",
+	"main": "src/bootstrap.ts",
 	"exports": {
-		".": "./src/index.ts"
+		"./config": "./src/config.ts"
 	},
 	"scripts": {
-		"start": "tsx watch src/bootstrap.ts",
+		"dev": "tsx watch src/bootstrap.ts",
+		"dev:build": "tsup src/bootstrap.ts --watch --onSuccess 'node dist/bootstrap.js'",
 		"test": "vitest",
 		"clean": "rm -rf .turbo node_modules",
 		"format": "prettier --write . --ignore-path ../../.gitignore",
@@ -39,12 +45,12 @@
 	"eslintConfig": {
 		"root": true,
 		"extends": [
-			"tooling/eslint-config/base",
-			"tooling/eslint-config/typescript"
+			"@tooling/eslint-config/base",
+			"@tooling/eslint-config/typescript"
 		],
 		"rules": {
 			"import/no-cycle": "off"
 		}
 	},
-	"prettier": "tooling/prettier-config"
+	"prettier": "@tooling/prettier-config"
 }

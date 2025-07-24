@@ -1,5 +1,5 @@
 {
-  "name": "tooling/eslint-config",
+  "name": "@tooling/eslint-config",
   "private": true,
   "type": "module",
   "exports": {
@@ -28,8 +28,8 @@
   },
   "devDependencies": {
     "@remix-run/eslint-config": "^2.7.2",
-    "tooling/prettier-config": "workspace:^",
-    "tooling/typescript-config": "workspace:^",
+    "@tooling/prettier-config": "workspace:^",
+    "@tooling/typescript-config": "workspace:^",
     "eslint": "^8.38.0",
     "prettier": "^3.2.5",
     "typescript": "^5.2.2"
@@ -45,5 +45,5 @@
       "./base.js"
     ]
   },
-  "prettier": "tooling/prettier-config"
+  "prettier": "@tooling/prettier-config"
 }

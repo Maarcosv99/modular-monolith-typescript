@@ -5,6 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
+    "start": "turbo run start --parallel",
     "dev": "tsx watch src/main.ts",
     "test": "turbo run test --parallel"
   },
