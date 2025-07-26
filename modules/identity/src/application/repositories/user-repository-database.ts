@@ -10,6 +10,8 @@ import { UserNotFoundException } from 'core/exceptions/user-not-found.exception'
 import { UserAlreadyExistsException } from 'core/exceptions/user-already-exists.exception';
 
 import { UserRepository, UserRepositorySymbol } from 'core/repositories/user.repository';
+import { DomainEvents } from '@modules/shared/core/events/DomainEvents';
+import { UniqueEntityID } from '@modules/shared/core/UniqueEntityID';
 
 @injectable()
 @registry([{
@@ -23,12 +25,13 @@ export class UserRepositoryDatabase implements UserRepository{
   ) {}
 
   async create(user: User): Promise<Result<User, UserAlreadyExistsException>> {
-    const existingUser = await this.database.find<User>('users', { email: user.email.value });
+    const existingUser = await this.database.find<User>('users', { email: user.email.props.value });
     if (existingUser) {
-      return Failure(new UserAlreadyExistsException(user.email.value));
+      return Failure(new UserAlreadyExistsException(user.email.props.value));
     }
 
     const newUser = await this.database.insert<User>('users', user);
+    DomainEvents.dispatchEventsForAggregate(user.id);
     return Success(newUser);
   }
 
@@ -53,15 +56,17 @@ export class UserRepositoryDatabase implements UserRepository{
   async update(user: User): Promise<Result<User, UserNotFoundException>> {
     const existingUser = await this.database.find<User>('users', { id: user.id });
     if (!existingUser) {
-      return Failure(new UserNotFoundException(user.id));
+      return Failure(new UserNotFoundException(user.id.toString()));
     }
 
     const updatedUser = await this.database.update<User>('users', user);
+    DomainEvents.dispatchEventsForAggregate(user.id);
     return Success(updatedUser);
   }
 
   async delete(id: string): Promise<Result<void, UserNotFoundException>> {
     await this.database.delete('users', { id });
+    DomainEvents.dispatchEventsForAggregate(new UniqueEntityID(id));
     return Success(undefined);
   }
 }
