@@ -17,7 +17,7 @@ import { RegisterUserUseCaseSymbol } from 'application/usecases/register-user.us
 
 import { ExpressServerService } from '@modules/shared/infrastructure/rest/express/express.service';
 import { RestServerService } from '@modules/shared/http/rest/rest';
-import type { RestServerServiceSymbol } from '@modules/shared/http/rest/rest'
+import { RestServerServiceSymbol } from '@modules/shared/http/rest/rest'
 
 container.registerSingleton<Database>(DatabaseSymbol, DrizzleDatabaseService);
 container.registerSingleton<UserRepository>(UserRepositorySymbol, UserRepositoryDatabase);
