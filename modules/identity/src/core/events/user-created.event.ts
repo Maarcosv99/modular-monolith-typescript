@@ -1,13 +1,17 @@
-export class UserCreatedEvent {
-  private constructor(public readonly userId: string) {}
+import { IDomainEvent } from "@modules/shared/core/events/IDomainEvent";
+import { UniqueEntityID } from "@modules/shared/core/UniqueEntityID";
+import { User } from "../entities/user.entity";
 
-  static create(userId: string): UserCreatedEvent {
-    return new UserCreatedEvent(userId);
+export class UserCreatedEvent implements IDomainEvent{
+  public dateTimeOccurred: Date;
+  public user: User;
+
+  constructor (user: User) {
+    this.dateTimeOccurred = new Date();
+    this.user = user;
   }
-
-  toJson(): string {
-    return JSON.stringify({
-      userId: this.userId,
-    });
+  
+  getAggregateId (): UniqueEntityID {
+    return this.user.id;
   }
 }
