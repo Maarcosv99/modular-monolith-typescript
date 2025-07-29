@@ -10,33 +10,32 @@
 		"zod": "^3.23.8"
 	},
 	"devDependencies": {
+		"@electric-sql/pglite": "^0.3.6",
 		"@tooling/typescript-config": "workspace:^",
 		"@types/express": "^5.0.3",
 		"@types/pg": "^8.15.4",
 		"@types/uuid": "^9.0.7",
 		"dotenv": "^16.3.1",
 		"dotenv-cli": "^7.4.2",
+		"drizzle-kit": "^0.31.4",
 		"esbuild-register": "^3.5.0",
 		"eslint": "8.38.0",
 		"files-folder": "^1.2.4",
 		"tsup": "^7.2.0",
 		"tsx": "^3.12.7"
 	},
-	"main": "dist/index.js",
-	"types": "dist/index.d.ts",
 	"name": "@modules/shared",
 	"exports": {
-		"./*": {
-			"import": "./dist/*.js",
-			"require": "./dist/*.cjs",
-			"types": "./dist/*.d.ts"
-		}
+		"./*": "./src/*.ts"
 	},
 	"scripts": {
 		"build": "tsup",
 		"clean": "rm -rf .turbo node_modules",
 		"format": "prettier --write . --ignore-path ../../.gitignore",
-		"lint": "eslint ."
+		"lint": "eslint .",
+		"database:generate": "drizzle-kit generate",
+		"database:migrate": "drizzle-kit migrate",
+		"database:studio": "drizzle-kit studio"
 	},
 	"type": "module",
 	"eslintConfig": {

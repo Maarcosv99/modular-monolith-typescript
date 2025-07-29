@@ -1,10 +1,10 @@
-import { injectable, registry } from 'tsyringe';
+import { injectable } from 'tsyringe';
 
 import type {
   RestServerService,
   RestServerConfig,
 } from 'http/rest/rest';
-import { RestRoute, RestServerServiceSymbol } from 'http/rest/rest';
+import { RestRoute } from 'http/rest/rest';
 
 import { expressRouteAdapter } from './express-route-adapter';
 import { expressMiddlewareAdapter } from './express-middleware-adapter';
@@ -12,10 +12,6 @@ import { expressMiddlewareAdapter } from './express-middleware-adapter';
 import express from 'express';
 
 @injectable()
-@registry([{
-  token: RestServerServiceSymbol,
-  useClass: ExpressServerService,
-}])
 export class ExpressServerService implements RestServerService {
   private app: express.Application;
 
@@ -43,7 +39,31 @@ export class ExpressServerService implements RestServerService {
 
       route.routeData.middlewares.forEach((middleware) => {
         this.app.use(
-          this.config.basePath + route.routeData.path,
+          path,
+          expressMiddlewareAdapter(middleware)
+        );
+      });
+
+      if (route.routeData.controller) {
+        const adaptedController = expressRouteAdapter(route.routeData.controller);
+        if (Array.isArray(route.routeData.method)) {
+          route.routeData.method.forEach((method) => {
+            this.app[method](path, adaptedController);
+          });
+        } else {
+          this.app[route.routeData.method](path, adaptedController);
+        }
+      }
+    });
+  }
+
+  addModuleRoutes(basePath: string, moduleRoutes: RestRoute[]): void {
+    moduleRoutes.forEach((route) => {
+      const path = this.config.basePath + basePath + route.routeData.path;
+
+      route.routeData.middlewares.forEach((middleware) => {
+        this.app.use(
+          path,
           expressMiddlewareAdapter(middleware)
         );
       });

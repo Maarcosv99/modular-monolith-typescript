@@ -1,5 +1,5 @@
-import { Entity } from '@modules/shared/core/Entity';
-import { UniqueEntityID } from '@modules/shared/core/UniqueEntityID';
+import { Entity } from '@modules/shared/core/entity';
+import { UniqueEntityID } from '@modules/shared/core/unique-entity-id';
 
 import { Email } from 'core/value-objects/email.value-object';
 import { Password } from 'core/value-objects/password.value-object';

@@ -1,52 +1,67 @@
-import { injectable, registry} from 'tsyringe';
+import { injectable} from 'tsyringe';
 
-import { drizzle } from 'drizzle-orm/node-postgres';
-import type { NodePgDatabase } from 'drizzle-orm/node-postgres';
+import { drizzle } from 'drizzle-orm/pglite';
+import type { PgliteDatabase } from 'drizzle-orm/pglite';
 import { eq } from 'drizzle-orm';
 
-import { Pool } from 'pg';
 import type { Database } from 'application/service/database.interface';
-import { DatabaseSymbol } from 'application/service/database.interface';
+import * as schema from './schemas';
+
+import path from 'node:path';
 
 @injectable()
-@registry([{
-  token: DatabaseSymbol,
-  useClass: DrizzleDatabaseService,
-}])
 export class DrizzleDatabaseService implements Database {
-  private database: NodePgDatabase;
+  private database: PgliteDatabase;
 
   constructor() {
-    const pool = new Pool({ connectionString: process.env.DATABASE_URL });
-    this.database = drizzle(pool);
+    const pglitePath = path.resolve(__dirname, '../../../../pglite');
+    this.database = drizzle(pglitePath, {
+      schema: schema
+    });
   }
 
-  private mountWhere(where?: Record<string, any>): any[] {
-    return where ? Object.entries(where).map(([key, value]) => eq(key as any, value)) : [];
+  private getTable(table: string) {
+    if (Object.keys(this.database._.fullSchema).includes(table)) {
+      return this.database._.fullSchema[table];
+    }
+
+    throw new Error(`Table ${table} not found`);
+  }
+
+  private mountWhere(table: string, where: Record<string, any> = {}): any[] {
+    return Object.entries(where).map(([key, value]) => {
+      const tableSchema = this.getTable(table);
+      const column = tableSchema[key as any];
+      return eq(column, value);
+    });
   }
 
   async insert<T>(table: string, data: T): Promise<T> {
-    const result = await this.database.insert(table as any).values(data as any).returning() as T[];
+    const result = await this.database.insert(this.getTable(table)).values(data as any).returning();
     return result[0];
   }
 
-  async find<T>(table: string, where?: Record<string, any>): Promise<T> {
-    const result = await this.database.select().from(table as any).where(this.mountWhere(where) as any);
+  async find<T>(table: string, where?: Record<string, any>): Promise<T | null> {
+    const result = await this.database.select().from(this.getTable(table)).where(this.mountWhere(table, where) as any);
+    if (result.length === 0) {
+      return null;
+    }
+
     return result[0] as T;
   }
 
   async findAll<T>(table: string): Promise<T[]> {
-    const result = await this.database.select().from(table as any);
+    const result = await this.database.select().from(this.getTable(table));
     return result as T[];
   }
 
   async update<T>(table: string, data: T, where?: Record<string, any>): Promise<T> {
-    const result = await this.database.update(table as any).set(data as any).where(this.mountWhere(where) as any).returning() as T[];
+    const result = await this.database.update(this.getTable(table)).set(data as any).where(this.mountWhere(where) as any).returning() as T[];
     return result[0];
   }
 
   async delete(table: string, where?: Record<string, any>): Promise<void> {
-    await this.database.delete(table as any).where(this.mountWhere(where) as any);
+    await this.database.delete(this.getTable(table)).where(this.mountWhere(where) as any);
   }
 }
 

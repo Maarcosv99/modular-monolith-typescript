@@ -1,6 +1,6 @@
 import type { Result } from '@modules/shared/core/result';
 import { Success, Failure } from '@modules/shared/core/result';
-import { ValueObject } from '@modules/shared/core/ValueObject';
+import { ValueObject } from '@modules/shared/core/value-object';
 
 import { InvalidEmailException } from 'core/exceptions/invalid-email.exception';
 
@@ -21,11 +21,15 @@ export class Email extends ValueObject<EmailProp>{
     return true;
   }
 
-  static create(value: EmailProp): Result<Email, InvalidEmailException> {
-    if (!Email.validate(value)) {
+  get value(): string {
+    return this.props.value;
+  }
+
+  static create(value: string): Result<Email, InvalidEmailException> {
+    if (!Email.validate({ value })) {
       return Failure(new InvalidEmailException('Invalid email'));
     }
 
-    return Success(new Email(value));
+    return Success(new Email({ value }));
   }
 }

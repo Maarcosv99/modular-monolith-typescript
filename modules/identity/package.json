@@ -5,6 +5,7 @@
 		"bcrypt": "^6.0.0",
 		"drizzle": "^1.4.0",
 		"drizzle-orm": "^0.44.3",
+		"jsonwebtoken": "^9.0.2",
 		"pg": "^8.16.3",
 		"reflect-metadata": "^0.2.2",
 		"tsyringe": "^4.10.0",
@@ -15,8 +16,9 @@
 		"@swc/core": "^1.13.2",
 		"@tooling/typescript-config": "workspace:^",
 		"@types/bcrypt": "^5.0.2",
+		"@types/jsonwebtoken": "^9.0.10",
 		"@types/uuid": "^9.0.7",
-		"dotenv": "^16.3.1",
+		"dotenv": "^16.6.1",
 		"dotenv-cli": "^7.4.2",
 		"esbuild": "^0.25.8",
 		"esbuild-plugin-alias-path": "^2.0.2",
@@ -28,13 +30,10 @@
 		"vitest": "^3.2.4"
 	},
 	"name": "@modules/identity",
-	"main": "src/bootstrap.ts",
 	"exports": {
-		"./config": "./src/config.ts"
+		"./module": "./src/module.ts"
 	},
 	"scripts": {
-		"dev": "tsx watch src/bootstrap.ts",
-		"dev:build": "tsup src/bootstrap.ts --watch --onSuccess 'node dist/bootstrap.js'",
 		"test": "vitest",
 		"clean": "rm -rf .turbo node_modules",
 		"format": "prettier --write . --ignore-path ../../.gitignore",

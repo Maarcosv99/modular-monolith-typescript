@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "start": "turbo run start --parallel",
-    "dev": "tsx watch src/main.ts",
+    "dev": "turbo run dev --parallel",
     "test": "turbo run test --parallel"
   },
   "keywords": [],

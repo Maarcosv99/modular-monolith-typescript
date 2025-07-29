@@ -4,6 +4,8 @@ import { defineConfig } from 'tsup';
 
 import path from 'path';
 
+// Maybe build all modules first and then build the api.
+
 export default defineConfig({
   entry: ['src/main.ts'],
   outDir: 'dist',

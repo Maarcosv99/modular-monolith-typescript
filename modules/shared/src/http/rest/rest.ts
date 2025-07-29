@@ -55,9 +55,17 @@ export class RestRoute {
   private _controller: RestController<unknown> | null = null
 
   private constructor(
-    private readonly _method: RestMethod | RestMethod[],
-    private readonly _path: string,
+    private _method: RestMethod | RestMethod[],
+    private _path: string,
   ) {}
+
+  set method(method: RestMethod | RestMethod[]) {
+    this._method = method;
+  }
+
+  set path(path: string) {
+    this._path = path;
+  }
 
   static get(path: string): RestRoute {
     return new RestRoute('get', path);
@@ -98,6 +106,7 @@ export class RestRoute {
 export interface RestServerService {
   configure(config: RestServerConfig): void
   addRoute(routes: RestRoute | RestRoute[]): void
+  addModuleRoutes(basePath: string, moduleRoutes: RestRoute | RestRoute[]): void
   start(): void
 }
 

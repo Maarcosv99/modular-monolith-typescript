@@ -1,5 +1,8 @@
-import { routes as identityRoutes } from '@modules/identity/config';
+import 'reflect-metadata';
+
 import { ExpressServerService } from '@modules/shared/infrastructure/rest/express/express.service';
+
+import IdentityModule from '@modules/identity/module';
 
 const rest = new ExpressServerService();
 rest.configure({
@@ -7,6 +10,6 @@ rest.configure({
   basePath: '/api/v1',
 });
 
-rest.addRoutes('/identity', identityRoutes);
+rest.addModuleRoutes('/identity', IdentityModule.routes);
 
 rest.start();

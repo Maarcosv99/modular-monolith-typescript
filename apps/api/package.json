@@ -3,14 +3,15 @@
 		"@modules/identity": "workspace:*",
 		"@modules/shared": "workspace:*",
 		"@tooling/eslint-config": "workspace:*",
-		"express": "^5.1.0"
+		"express": "^5.1.0",
+		"reflect-metadata": "^0.2.2"
 	},
 	"devDependencies": {
 		"@esbuild-plugins/tsconfig-paths": "^0.1.2",
 		"@tooling/typescript-config": "workspace:^",
 		"@types/express": "^5.0.3",
 		"dotenv": "^16.3.1",
-		"dotenv-cli": "^7.4.2",
+		"dotenv-cli": "^7.4.4",
 		"esbuild-register": "^3.5.0",
 		"eslint": "8.38.0",
 		"ts-node": "^10.9.2",
@@ -25,7 +26,7 @@
 	"name": "@apps/api",
 	"scripts": {
 		"build": "vite build",
-		"start": "vite-node src/main.ts",
+		"dev": "dotenv -e ../../.env.example -- vite-node src/main.ts",
 		"clean": "rm -rf .turbo node_modules",
 		"format": "prettier --write . --ignore-path ../../.gitignore",
 		"lint": "eslint ."

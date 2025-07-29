@@ -7,11 +7,15 @@ export class Password {
   private constructor(public readonly value: string) {}
 
   static validate(value: string): boolean {
-    if (value.length > 10) {
+    if (value.length < 8) {
       return false;
     }
 
     return true;
+  }
+
+  static compare(password: Password, hashedPassword: string): boolean {
+    return password.value === hashedPassword;
   }
 
   static create(value: string): Result<Password, PasswordMaxLengthException> {

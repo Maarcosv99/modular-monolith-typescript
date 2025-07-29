@@ -3,7 +3,7 @@ import { describe, it, expect } from 'vitest';
 import { isFailure, isSuccess } from '@modules/shared/core/result';
 
 import { BcryptPasswordHasherService } from 'infrastructure/hashing/bcrypt-password-hasher.service';
-import { PasswordNotMatchingException } from '@/application/exceptions/password-not-matching.exception';
+import { PasswordNotMatchingException } from 'application/exceptions/password-not-matching.exception';
 
 describe('BcryptPasswordHasher', () => {
   const hasher = new BcryptPasswordHasherService();
