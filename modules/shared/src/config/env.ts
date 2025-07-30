@@ -4,7 +4,7 @@ import { z } from 'zod';
 
 const envSchema = z.object({
   JWT_ACCESS_TOKEN_SECRET: z.string(),
-  JWT_ACCESS_TOKEN_EXPIRES_IN: z.enum(['1h', '1d', '1w']),
+  JWT_ACCESS_TOKEN_EXPIRES_IN: z.enum(['1h', '1d', '1w', '5m']),
   JWT_REFRESH_TOKEN_SECRET: z.string(),
   JWT_REFRESH_TOKEN_EXPIRES_IN: z.enum(['1d', '7d']),
   REDIS_URL: z.string(),

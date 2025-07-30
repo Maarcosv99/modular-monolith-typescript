@@ -15,6 +15,8 @@ import { refreshTokenRequestSchema } from './validator/request/refresh-token-req
 import { LogoutController } from './controller/logout.controller';
 import { AuthenticatedMiddleware } from './middlewares/authenticated.middleware';
 
+import { GetUserController } from './controller/get-user.controller';
+
 export const registerUserRoute = route.post('/register')
   .middlewares(new ValidatorMiddleware('body', registerUserRequestSchema))
   .controller(container.resolve(RegisterUserController));
@@ -30,3 +32,7 @@ export const refreshTokenRoute = route.post('/refresh')
 export const logOutRoute = route.delete('/logout')
   .middlewares(container.resolve(AuthenticatedMiddleware))
   .controller(container.resolve(LogoutController));
+
+export const getUserRoute = route.get('/me')
+  .middlewares(container.resolve(AuthenticatedMiddleware))
+  .controller(container.resolve(GetUserController));

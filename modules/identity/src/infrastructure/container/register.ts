@@ -31,6 +31,7 @@ import { RegisterUserUseCase, RegisterUserUseCaseSymbol } from 'application/usec
 import { SignInUseCase, SignInUseCaseSymbol } from 'application/usecases/sign-in.usecase';
 import { LogOutUseCase, LogOutUseCaseSymbol } from 'application/usecases/logout.usecase';
 import { RefreshTokenUseCase, RefreshTokenUseCaseSymbol } from 'application/usecases/refresh-token.usecase';
+import { GetUserByAccessTokenUseCase, GetUserByAccessTokenUseCaseSymbol } from 'application/usecases/get-user-by-access-token.usecase';
 
 container.registerInstance<ConfigEnv>(ConfigEnvSymbol, envConfig);
 container.registerSingleton<Database>(DatabaseSymbol, DrizzleDatabaseService);
@@ -43,3 +44,4 @@ container.registerSingleton<RegisterUserUseCase>(RegisterUserUseCaseSymbol, Regi
 container.registerSingleton<SignInUseCase>(SignInUseCaseSymbol, SignInUseCase);
 container.registerSingleton<LogOutUseCase>(LogOutUseCaseSymbol, LogOutUseCase);
 container.registerSingleton<RefreshTokenUseCase>(RefreshTokenUseCaseSymbol, RefreshTokenUseCase);
+container.registerSingleton<GetUserByAccessTokenUseCase>(GetUserByAccessTokenUseCaseSymbol, GetUserByAccessTokenUseCase);

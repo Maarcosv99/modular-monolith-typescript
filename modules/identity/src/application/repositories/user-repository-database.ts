@@ -22,6 +22,32 @@ export class UserRepositoryDatabase implements UserRepository{
     private readonly database: Database
   ) {}
 
+  private toDomain(user: any): Result<User, UserNotFoundException> {
+    const idOrError = UniqueEntityID.create(user.id);
+    if (isFailure(idOrError)) {
+      return Failure(new UserNotFoundException(user.id));
+    }
+
+    const emailOrError = Email.create(user.email);
+    if (isFailure(emailOrError)) {
+      return Failure(new UserNotFoundException(user.email));
+    }
+
+    const passwordOrError = Password.create(user.password);
+    if (isFailure(passwordOrError)) {
+      return Failure(new UserNotFoundException(user.password));
+    }
+
+    const foundUser = User.create({
+      first_name: user.firstName,
+      last_name: user.lastName,
+      email: emailOrError.value,
+      password: passwordOrError.value,
+    }, idOrError.value);
+
+    return Success(foundUser);
+  }
+
   async create(user: User): Promise<Result<User, UserAlreadyExistsException>> {
     await this.database.insert('users', {
       id: user.id.toValue(),
@@ -37,12 +63,17 @@ export class UserRepositoryDatabase implements UserRepository{
   }
 
   async findById(id: string): Promise<Result<User, UserNotFoundException>> {
-    const user = await this.database.find<User>('users', { id });
+    const user = await this.database.find<User>('users', { id }) as any;
     if (!user) {
       return Failure(new UserNotFoundException(id));
     }
 
-    return Success(user);
+    const userOrError = this.toDomain(user);
+    if (isFailure(userOrError)) {
+      return Failure(new UserNotFoundException(id));
+    }
+
+    return Success(userOrError.value);
   }
 
   async findByEmail(email: string): Promise<Result<User, UserNotFoundException>> {
@@ -51,29 +82,12 @@ export class UserRepositoryDatabase implements UserRepository{
       return Failure(new UserNotFoundException(email));
     }
 
-    const idOrError = UniqueEntityID.create(user.id);
-    if (isFailure(idOrError)) {
+    const userOrError = this.toDomain(user);
+    if (isFailure(userOrError)) {
       return Failure(new UserNotFoundException(email));
     }
 
-    const emailOrError = Email.create(user.email);
-    if (isFailure(emailOrError)) {
-      return Failure(new UserNotFoundException(email));
-    }
-
-    const passwordOrError = Password.create(user.password);
-    if (isFailure(passwordOrError)) {
-      return Failure(new UserNotFoundException(email));
-    }
-
-    const foundUser = User.create({
-      first_name: user.first_name,
-      last_name: user.last_name,
-      email: emailOrError.value,
-      password: passwordOrError.value,
-    }, idOrError.value);
-
-    return Success(foundUser);
+    return Success(userOrError.value);
   }
 
   async update(user: User): Promise<Result<User, UserNotFoundException>> {
