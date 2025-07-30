@@ -10,8 +10,8 @@ import { Password } from 'core/value-objects/password.value-object';
 
 type UserPersistence = {
   id: string
-  first_name: string
-  last_name: string
+  firstName: string
+  lastName: string
   email: string
   password: string
 }
@@ -46,8 +46,8 @@ class UserMapper extends Mapper<User, UserPersistence, Error> {
   toPersistence(domain: User): Result<UserPersistence, Error> {
     return Success({
       id: String(domain.id.toValue()),
-      first_name: domain.first_name,
-      last_name: domain.last_name,
+      firstName: domain.first_name,
+      lastName: domain.last_name,
       email: domain.email.value,
       password: domain.password.value,
     });
