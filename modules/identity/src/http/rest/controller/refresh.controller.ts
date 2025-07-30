@@ -7,8 +7,6 @@ import { isFailure } from '@modules/shared/core/result';
 
 import { RefreshTokenUseCase, RefreshTokenUseCaseSymbol } from 'application/usecases/refresh-token.usecase';
 
-import type { RefreshTokenRequestDto } from '../dto/request/refresh-token-request.dto';
-
 @injectable()
 export class RefreshController implements RestController {
   constructor(
@@ -17,7 +15,13 @@ export class RefreshController implements RestController {
   ) {}
 
   async handleRequest(request: HttpRequest): Promise<HttpResponse<{ accessToken: string } | { error: string }>> {
-    const { refreshToken } = request.body as RefreshTokenRequestDto;
+    const refreshToken = request.headers['x-refresh-token'] || request.headers['X-Refresh-Token'];
+
+    if (!refreshToken) {
+      return {
+        status: HttpStatus.unAuthorizedRequest
+      }
+    }
 
     const refreshTokenOrError = await this.refreshTokenUseCase.execute(refreshToken);
     if (isFailure(refreshTokenOrError)) {
