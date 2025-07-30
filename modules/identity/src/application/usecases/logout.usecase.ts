@@ -16,8 +16,8 @@ export class LogOutUseCase {
     private tokenManagerService: TokenManagerService,
   ) {}
 
-  async execute(token: string): Promise<Result<void, JwtException>> {
-    const tokenIsValidOrError = await this.tokenManagerService.checkRefreshToken(token);
+  async execute(refreshToken: string): Promise<Result<void, JwtException>> {
+    const tokenIsValidOrError = await this.tokenManagerService.checkRefreshToken(refreshToken);
     if (isFailure(tokenIsValidOrError)) {
       return Failure(new JwtException('Invalid refresh token'));
     }
@@ -26,7 +26,7 @@ export class LogOutUseCase {
       return Failure(new Error('Token is not valid'));
     }
 
-    const revokeRefreshTokenOrError = await this.tokenManagerService.deleteRefreshToken(token);
+    const revokeRefreshTokenOrError = await this.tokenManagerService.deleteRefreshToken(refreshToken);
     if (isFailure(revokeRefreshTokenOrError)) {
       return Failure(new Error('Failed to revoke refresh token'));
     }

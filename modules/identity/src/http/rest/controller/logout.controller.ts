@@ -14,19 +14,20 @@ export class LogoutController implements RestController {
     private logOutUseCase: LogOutUseCase,
   ) {}
 
-  async handleRequest(request: HttpRequest): Promise<HttpResponse<undefined>> {
-    const accessToken = request.headers['authorization'];
+  async handleRequest(request: HttpRequest): Promise<HttpResponse<undefined | { error: string }>> {
+    const refreshToken = request.headers['x-refresh-token'];
 
-    if (!accessToken) {
+    if (!refreshToken) {
       return {
         status: HttpStatus.unAuthorizedRequest
       }
     }
 
-    const logOutOrError = await this.logOutUseCase.execute(accessToken);
+    const logOutOrError = await this.logOutUseCase.execute(refreshToken);
     if (isFailure(logOutOrError)) {
       return {
-        status: HttpStatus.unAuthorizedRequest
+        status: HttpStatus.forbiddenRequest,
+        body: { error: logOutOrError.error.message }
       }
     }
 
