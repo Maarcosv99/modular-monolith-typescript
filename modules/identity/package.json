@@ -31,7 +31,8 @@
 	},
 	"name": "@modules/identity",
 	"exports": {
-		"./module": "./src/module.ts"
+		"./module": "./src/module.ts",
+		"./public": "./src/public.ts"
 	},
 	"scripts": {
 		"test": "vitest",
