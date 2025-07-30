@@ -1,8 +1,9 @@
-import { Entity } from '@modules/shared/core/entity';
+import { AggregateRoot } from '@modules/shared/core/aggregate-root';
 import { UniqueEntityID } from '@modules/shared/core/unique-entity-id';
 
 import { Email } from 'core/value-objects/email.value-object';
 import { Password } from 'core/value-objects/password.value-object';
+import { UserCreatedEvent } from '../events/user-created.event';
 
 export interface UserProps {
   id?: UniqueEntityID
@@ -12,7 +13,7 @@ export interface UserProps {
   password: Password
 }
 
-export class User extends Entity<UserProps> {
+export class User extends AggregateRoot<UserProps> {
   private constructor(
     props: UserProps,
     id?: UniqueEntityID,
@@ -45,6 +46,11 @@ export class User extends Entity<UserProps> {
   }
 
   static create(props: UserProps, id?: UniqueEntityID): User {
-    return new User(props, id);
+    const user = new User(props, id)
+    const isNewUser = !!id === false;
+    if (isNewUser){
+      user.addDomainEvent(new UserCreatedEvent(user))
+    }
+    return user;
   }
 }
