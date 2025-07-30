@@ -1,8 +1,10 @@
 {
 	"dependencies": {
 		"@tooling/eslint-config": "workspace:^",
-		"drizzle-orm": "^0.44.3",
+		"drizzle-orm": "0.44.3",
+		"drizzle-plus": "1.0.0-beta.34",
 		"express": "^5.1.0",
+		"ioredis": "^5.6.1",
 		"pg": "^8.16.3",
 		"shallow-equal-object": "^1.1.1",
 		"tsyringe": "^4.10.0",
@@ -34,7 +36,7 @@
 		"format": "prettier --write . --ignore-path ../../.gitignore",
 		"lint": "eslint .",
 		"database:generate": "drizzle-kit generate",
-		"database:migrate": "drizzle-kit migrate",
+		"database:migrate": "dotenv -e ../../.env.example -- drizzle-kit migrate",
 		"database:studio": "drizzle-kit studio"
 	},
 	"type": "module",

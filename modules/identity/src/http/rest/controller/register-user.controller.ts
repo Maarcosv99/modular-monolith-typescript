@@ -13,6 +13,8 @@ import type { RegisterUserRequestDto } from 'http/rest/dto/request/register-user
 import { EmailAlreadyUsedException } from 'core/exceptions/email-already-used.exception';
 import { InvalidEmailException } from 'core/exceptions/invalid-email.exception';
 import { HashingException } from 'application/exceptions/hashing-error.exception';
+import { PasswordMaxLengthException } from 'src/core/exceptions/password-max-length.exception';
+import { UserAlreadyExistsException } from 'src/core/exceptions/user-already-exists.exception';
 
 @injectable()
 export class RegisterUserController implements RestController {
@@ -47,6 +49,21 @@ export class RegisterUserController implements RestController {
           body: { error: result.error.message }
         }
       }
+
+      if (result.error instanceof PasswordMaxLengthException) {
+        return {
+          status: HttpStatus.badRequest,
+          body: { error: result.error.message }
+        }
+      }
+      
+      if (result.error instanceof UserAlreadyExistsException) {
+        return {
+          status: HttpStatus.badRequest,
+          body: { error: result.error.message }
+        }
+      }
+
 
       return {
         status: HttpStatus.internalServerErrorRequest,

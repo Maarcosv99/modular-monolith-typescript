@@ -67,4 +67,18 @@ export class JsonWebTokensJwtService implements JwtService {
       return Failure(error as Error);
     }
   }
+
+  async decode(type: 'access' | 'refresh', token: string): Promise<Result<Record<string, unknown>, Error>> {
+    try {
+      const decoded = jwt.decode(token);
+
+      if (!decoded) {
+        return Failure(new Error('Invalid token'));
+      }
+
+      return Success(decoded as Record<string, unknown>);
+    } catch (error) {
+      return Failure(error as Error);
+    }
+  }
 }

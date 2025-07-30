@@ -8,6 +8,7 @@ const envSchema = z.object({
   JWT_REFRESH_TOKEN_SECRET: z.string(),
   JWT_REFRESH_TOKEN_EXPIRES_IN: z.enum(['1d', '7d']),
   REDIS_URL: z.string(),
+  POSTGRES_URL: z.string(),
 });
 
 const envParsed = envSchema.safeParse(process.env);
@@ -29,6 +30,9 @@ export const envConfig = {
   },
   redis: {
     url: envParsed.data.REDIS_URL,
+  },
+  postgres: {
+    url: envParsed.data.POSTGRES_URL,
   }
 };
 

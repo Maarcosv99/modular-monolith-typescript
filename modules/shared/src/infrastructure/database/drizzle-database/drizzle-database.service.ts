@@ -1,26 +1,29 @@
-import { injectable} from 'tsyringe';
+import { injectable, inject } from 'tsyringe';
 
-import { drizzle } from 'drizzle-orm/pglite';
-import type { PgliteDatabase } from 'drizzle-orm/pglite';
+import { ConfigEnvSymbol } from '@modules/shared/config/env';
+import type { ConfigEnv } from '@modules/shared/config/env';
+
+import { drizzle } from 'drizzle-orm/node-postgres';
+import type { NodePgDatabase } from 'drizzle-orm/node-postgres';
 import { eq } from 'drizzle-orm';
 
 import type { Database } from 'application/service/database.interface';
 import * as schema from './schemas';
 
-import path from 'node:path';
-
 @injectable()
 export class DrizzleDatabaseService implements Database {
-  private database: PgliteDatabase;
+  private database: NodePgDatabase;
 
-  constructor() {
-    const pglitePath = path.resolve(__dirname, '../../../../pglite');
-    this.database = drizzle(pglitePath, {
-      schema: schema
+  constructor(
+    @inject(ConfigEnvSymbol)
+    private env: ConfigEnv,
+  ) {
+    this.database = drizzle(this.env.postgres.url, {
+      schema: schema as any, // To avoid type errors
     });
   }
 
-  private getTable(table: string) {
+  private getTable(table: string): any {
     if (Object.keys(this.database._.fullSchema).includes(table)) {
       return this.database._.fullSchema[table];
     }

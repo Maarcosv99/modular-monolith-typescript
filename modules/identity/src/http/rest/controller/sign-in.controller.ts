@@ -12,8 +12,6 @@ import { SignInUseCaseSymbol } from 'application/usecases/sign-in.usecase';
 
 import { SessionAlreadyExistsException } from 'core/exceptions/session-already-exists.exception';
 import { SessionNotFoundException } from 'core/exceptions/session-not-found.exception';
-import { InvalidSecretException } from 'core/exceptions/invalid-secret.exceptio';
-import { InvalidSecureRandomStringException } from 'core/exceptions/invalid-secure-random-string.exception';
 import { UserNotFoundException } from 'src/core/exceptions/user-not-found.exception';
 import { PasswordNotMatchingException } from 'src/application/exceptions/password-not-matching.exception';
 import { JwtException } from 'src/application/exceptions/jwt-error.exception';
@@ -59,20 +57,6 @@ export class SignInController implements RestController {
       }
 
       if (signInOrError.error instanceof SessionNotFoundException) {
-        return {
-          status: HttpStatus.badRequest,
-          body: { error: signInOrError.error.message }
-        }
-      }
-
-      if (signInOrError.error instanceof InvalidSecretException) {
-        return {
-          status: HttpStatus.badRequest,
-          body: { error: signInOrError.error.message }
-        }
-      }
-
-      if (signInOrError.error instanceof InvalidSecureRandomStringException) {
         return {
           status: HttpStatus.badRequest,
           body: { error: signInOrError.error.message }

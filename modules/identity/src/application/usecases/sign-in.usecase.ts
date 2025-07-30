@@ -11,10 +11,11 @@ import type { PasswordHasherService } from 'application/services/hashing/passwor
 import { JwtServiceSymbol } from 'application/services/jwt/jwt.service';
 import type { JwtService } from 'application/services/jwt/jwt.service';
 
+import { TokenManagerServiceSymbol } from 'application/services/token-manager/token-manager.service';
+import type { TokenManagerService } from 'application/services/token-manager/token-manager.service';
+
 import { SessionAlreadyExistsException } from 'core/exceptions/session-already-exists.exception';
 import { SessionNotFoundException } from 'core/exceptions/session-not-found.exception';
-import { InvalidSecretException } from 'core/exceptions/invalid-secret.exceptio';
-import { InvalidSecureRandomStringException } from 'core/exceptions/invalid-secure-random-string.exception';
 import { UserNotFoundException } from 'src/core/exceptions/user-not-found.exception';
 import { PasswordNotMatchingException } from '../exceptions/password-not-matching.exception';
 import { JwtException } from 'application/exceptions/jwt-error.exception';
@@ -35,12 +36,14 @@ export class SignInUseCase {
     private passwordHasherService: PasswordHasherService,
     @inject(JwtServiceSymbol)
     private jwtService: JwtService,
+    @inject(TokenManagerServiceSymbol)
+    private tokenManagerService: TokenManagerService,
   ) {}
 
   async execute(input: SignInInput): Promise<
     Result<
     { accessToken: string, refreshToken: string },
-    UserNotFoundException | JwtException | PasswordNotMatchingException | SessionAlreadyExistsException | SessionNotFoundException | InvalidSecretException | InvalidSecureRandomStringException>
+    UserNotFoundException | JwtException | PasswordNotMatchingException | SessionAlreadyExistsException | SessionNotFoundException>
   > {
     const foundUserOrError = await this.userRepository.findByEmail(input.email);
     if (isFailure(foundUserOrError)) {
@@ -68,6 +71,14 @@ export class SignInUseCase {
     const jwtRefreshTokenOrError = await this.jwtService.sign('refresh', jwtPayload);
     if (isFailure(jwtRefreshTokenOrError)) {
       return Failure(new JwtException('Failed to sign JWT'));
+    }
+
+    const saveRefreshTokenOrError = await this.tokenManagerService.saveRefreshToken(
+      String(foundUserOrError.value.id.toValue()),
+      jwtRefreshTokenOrError.value,
+    );
+    if (isFailure(saveRefreshTokenOrError)) {
+      return Failure(new Error('Failed to save refresh token'));
     }
 
     return Success({

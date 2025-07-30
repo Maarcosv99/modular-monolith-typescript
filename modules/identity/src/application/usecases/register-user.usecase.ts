@@ -16,6 +16,7 @@ import { Password } from 'core/value-objects/password.value-object';
 import { InvalidEmailException } from 'core/exceptions/invalid-email.exception';
 import { HashingException } from 'application/exceptions/hashing-error.exception';
 import { PasswordMaxLengthException } from 'core/exceptions/password-max-length.exception';
+import { UserAlreadyExistsException } from 'src/core/exceptions/user-already-exists.exception';
 
 interface RegisterUserInput {
   first_name: string
@@ -37,8 +38,8 @@ export class RegisterUserUseCase {
   
   async execute(
     input: RegisterUserInput
-  ): Promise<Result<User, EmailAlreadyUsedException | PasswordMaxLengthException | InvalidEmailException | HashingException>> {
-    const emailOrError = Email.create({ value: input.email });
+  ): Promise<Result<User, EmailAlreadyUsedException | UserAlreadyExistsException | PasswordMaxLengthException | InvalidEmailException | HashingException>> {
+    const emailOrError = Email.create(input.email);
     if (isFailure(emailOrError)) return Failure(emailOrError.error);
 
     const existingUser = await this.userRepo.findByEmail(emailOrError.value.value);
