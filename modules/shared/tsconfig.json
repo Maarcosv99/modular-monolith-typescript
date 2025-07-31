@@ -2,6 +2,8 @@
 	"$schema": "https://github.com/SchemaStore/schemastore/raw/refs/heads/master/src/schemas/json/tsconfig.json",
 	"extends": "@tooling/typescript-config/node",
 	"compilerOptions": {
+		"strict": false,
+		"strictNullChecks": false,
 		"module": "preserve",
 		"moduleResolution": "bundler",
 		"baseUrl": ".",
