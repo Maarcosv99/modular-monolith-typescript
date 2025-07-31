@@ -9,6 +9,8 @@ const envSchema = z.object({
   JWT_REFRESH_TOKEN_EXPIRES_IN: z.enum(['1d', '7d']),
   REDIS_URL: z.string(),
   POSTGRES_URL: z.string(),
+  KAFKA_CLIENT_ID: z.string(),
+  KAFKA_BROKERS: z.string(),
 });
 
 const envParsed = envSchema.safeParse(process.env);
@@ -33,6 +35,9 @@ export const envConfig = {
   },
   postgres: {
     url: envParsed.data.POSTGRES_URL,
+  kafka: {
+    client_id: envParsed.data.KAFKA_CLIENT_ID,
+    brokers: envParsed.data.KAFKA_BROKERS.split(','),
   }
 };
 

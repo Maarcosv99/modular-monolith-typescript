@@ -1,5 +1,8 @@
+import { ConfigEnvSymbol } from '@modules/shared/config/env';
+import type { ConfigEnv } from '@modules/shared/config/env';
+
 import { Queue } from "@/application/service/queue.interface";
-import type { Producer, Consumer, ProducerRecord, ConsumerSubscribeTopics } from "kafkajs"
+import { type Producer, type Consumer, Kafka } from "kafkajs"
 import { inject, injectable } from "tsyringe";
 
 export const KafkaServiceSymbol = Symbol.for('KafkaServiceSymbol');
@@ -11,14 +14,19 @@ type messageCallback = (message:{key?:string,value:string,partition?:number,time
 @injectable()
 export class KafkaService implements Queue{
 
+  private kafka: Kafka;
   private static handlersMap:{[key:string]:messageCallback[]} = {};
 
   constructor(
+    @inject(ConfigEnvSymbol)
+    private env: ConfigEnv,
     @inject(KafkaProductorSymbol)
     private productor: Producer,
     @inject(KafkaConsumerSymbol)
     private consumer: Consumer
-  ){}
+  ){
+    this.kafka = new Kafka({clientId:this.env.kafka.client_id,brokers:this.env.kafka.brokers})
+  }
 
   async send(topic: string ,messages: { key?: string; value: string; timestamp: string; partition: number; }[]): Promise<void>{
     this.productor.send({topic,messages})
