@@ -1,0 +1,45 @@
+{
+	"dependencies": {
+		"@modules/identity": "workspace:^",
+		"@modules/shared": "workspace:^",
+		"@tooling/eslint-config": "workspace:^",
+		"resend": "^4.7.0",
+		"tsyringe": "^4.10.0",
+		"zod": "^3.23.8"
+	},
+	"devDependencies": {
+		"@tooling/typescript-config": "workspace:^",
+		"@types/uuid": "^9.0.7",
+		"dotenv": "^16.6.1",
+		"dotenv-cli": "^7.4.2",
+		"eslint": "8.38.0",
+		"tsup": "^7.2.0",
+		"tsx": "^3.14.0",
+		"vite-tsconfig-paths": "^5.1.4",
+		"vitest": "^3.2.4"
+	},
+	"name": "@modules/notification",
+	"exports": {
+		"./module": "./src/module.ts",
+		"./public": "./src/public.ts"
+	},
+	"scripts": {
+		"test": "vitest",
+		"clean": "rm -rf .turbo node_modules",
+		"format": "prettier --write . --ignore-path ../../.gitignore",
+		"lint": "eslint ."
+	},
+	"type": "module",
+	"types": "src/index.ts",
+	"eslintConfig": {
+		"root": true,
+		"extends": [
+			"@tooling/eslint-config/base",
+			"@tooling/eslint-config/typescript"
+		],
+		"rules": {
+			"import/no-cycle": "off"
+		}
+	},
+	"prettier": "@tooling/prettier-config"
+}

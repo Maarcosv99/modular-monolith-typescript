@@ -1,0 +1,24 @@
+{
+	"$schema": "https://json.schemastore.org/tsconfig",
+	"extends": "@tooling/typescript-config/node",
+	"compilerOptions": {
+		"module": "preserve",
+		"moduleResolution": "bundler",
+		"esModuleInterop": true,
+		"baseUrl": ".",
+		"experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+		"paths": {
+			"src/*": ["./src/*"],
+			"core/*": ["./src/core/*"],
+			"application/*": ["./src/application/*"],
+			"infrastructure/*": ["./src/infrastructure/*"],
+			"http/*": ["./src/http/*"],
+			"shared/*": ["./src/shared/*"],
+			"bootstrap": ["./src/bootstrap.ts"]
+		},
+		"types": ["vitest/globals"]
+	},
+	"include": [".", "drizzle.config.ts", "drizzle.migrate.ts"],
+	"exclude": ["node_modules"]
+}
