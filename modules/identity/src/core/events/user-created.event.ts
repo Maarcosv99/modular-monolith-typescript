@@ -1,5 +1,5 @@
-import { IDomainEvent } from "@modules/shared/core/events/IDomainEvent";
-import { UniqueEntityID } from "@modules/shared/core/UniqueEntityID";
+import { IDomainEvent } from "@modules/shared/core/events/idomains-events";
+import { UniqueEntityID } from "@modules/shared/core/unique-entity-id";
 import { User } from "../entities/user.entity";
 
 export class UserCreatedEvent implements IDomainEvent{
