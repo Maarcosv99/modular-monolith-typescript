@@ -8,6 +8,8 @@
 		"baseUrl": ".",
 		"experimentalDecorators": true,
     "emitDecoratorMetadata": true,
+    "skipLibCheck": true,
+    "jsx": "react-jsx",
 		"paths": {
 			"src/*": ["./src/*"],
 			"core/*": ["./src/core/*"],
