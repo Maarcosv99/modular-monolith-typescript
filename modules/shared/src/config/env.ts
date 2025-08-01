@@ -14,6 +14,7 @@ const envSchema = z.object({
   RESEND_EMAIL_DOMAIN: z.string(),
   KAFKA_CLIENT_ID: z.string(),
   KAFKA_BROKERS: z.string(),
+  KAFKA_GROUP_ID: z.string(),
 });
 
 const envParsed = envSchema.safeParse(process.env);
@@ -47,6 +48,7 @@ export const envConfig = {
   kafka: {
     client_id: envParsed.data.KAFKA_CLIENT_ID,
     brokers: envParsed.data.KAFKA_BROKERS.split(','),
+    group_id: envParsed.data.KAFKA_GROUP_ID,
   }
 };
 

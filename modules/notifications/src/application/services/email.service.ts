@@ -36,6 +36,7 @@ enum MailEvents {
   welcome,
 }
 
+export const EmailServiceSymbol = Symbol.for('EmailServiceSymbol')
 @injectable()
 export class EmailService {
   private Resend: Resend;

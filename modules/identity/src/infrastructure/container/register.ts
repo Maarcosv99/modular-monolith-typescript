@@ -1,15 +1,8 @@
 import { container } from 'tsyringe';
 
+import '@modules/shared/infrastructure/container/register';
 import { envConfig, ConfigEnvSymbol } from '@modules/shared/config/env';
 import type { ConfigEnv } from '@modules/shared/config/env';
-
-import type { Database } from '@modules/shared/application/service/database.interface';
-import { DatabaseSymbol } from '@modules/shared/application/service/database.interface';
-import { DrizzleDatabaseService } from '@modules/shared/infrastructure/database/drizzle-database/drizzle-database.service';
-
-import type { Cache } from '@modules/shared/application/service/cache.interface';
-import { CacheSymbol } from '@modules/shared/application/service/cache.interface';
-import { IORedisCache } from '@modules/shared/infrastructure/cache/ioredis/ioredis.service';
 
 import type { UserRepository } from 'core/repositories/user.repository';
 import { UserRepositorySymbol } from 'core/repositories/user.repository';
@@ -34,8 +27,6 @@ import { RefreshTokenUseCase, RefreshTokenUseCaseSymbol } from 'application/usec
 import { GetUserByAccessTokenUseCase, GetUserByAccessTokenUseCaseSymbol } from 'application/usecases/get-user-by-access-token.usecase';
 
 container.registerInstance<ConfigEnv>(ConfigEnvSymbol, envConfig);
-container.registerSingleton<Database>(DatabaseSymbol, DrizzleDatabaseService);
-container.registerSingleton<Cache>(CacheSymbol, IORedisCache);
 container.registerSingleton<UserRepository>(UserRepositorySymbol, UserRepositoryDatabase);
 container.registerSingleton<PasswordHasherService>(PasswordHasherServiceSymbol, BcryptPasswordHasherService);
 container.registerSingleton<JwtService>(JwtServiceSymbol, JsonWebTokensJwtService);
